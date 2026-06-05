@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, render_template
-from data_loader import load_data, get_recent_scores
-from predictor import  predict_next_score, get_insights
-from data_store import load_data
-from scheduler import start_scheduler
+from .data_loader import load_data, get_recent_scores
+from .predictor import  predict_next_score, get_insights
+from .data_store import load_data
+from .scheduler import start_scheduler
 from services.tournament_store import load_tournaments
 from services.current_tournament import build_current_tournament
 

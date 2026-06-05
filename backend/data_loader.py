@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-file_path = os.path.join(BASE_DIR, "data", "spieth_scores.csv")
+file_path = os.path.join(BASE_DIR, "data", "spieth_history.csv")
 
 def load_data():
     df = pd.read_csv(file_path)

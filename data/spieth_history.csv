@@ -1,2 +1,3 @@
-player,tournament,score,vs_field
-Jordan Spieth,the Memorial Tournament pres. by Workday,6.0,2.787878787878788
+player,tournament,score,vs_field,tournament_id
+Jordan Spieth,the Memorial Tournament pres. by Workday,6.0,2.787878787878788,
+

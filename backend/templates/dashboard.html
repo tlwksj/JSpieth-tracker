@@ -4,7 +4,6 @@
     <title>Spieth Analytics Dashboard</title>
 
     <meta http-equiv="refresh" content="30">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -16,18 +15,27 @@
         }
 
         .container {
-            max-width: 1100px;
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
             margin: auto;
         }
 
-        .header {
-            margin-bottom: 20px;
+        /* LEFT SIDE */
+        .main {
+            flex: 3;
+        }
+
+        /* RIGHT SIDE */
+        .sidebar {
+            flex: 1;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         .card {
@@ -43,14 +51,14 @@
         }
 
         .value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
             background: white;
             border-radius: 10px;
             overflow: hidden;
@@ -60,10 +68,21 @@
             padding: 10px;
             border-bottom: 1px solid #eee;
             text-align: left;
+            font-size: 13px;
         }
 
         .section {
             margin-top: 20px;
+        }
+
+        a {
+            font-size: 13px;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -72,59 +91,102 @@
 
 <div class="container">
 
-    <div class="header">
+    <!-- ================= LEFT SIDE ================= -->
+    <div class="main">
+
         <h2>Jordan Spieth Analytics Dashboard</h2>
-    </div>
 
-    <div class="grid">
+        <div class="grid">
 
-        <div class="card">
-            <div class="label">Predicted Score</div>
-            <div class="value">{{ prediction }}</div>
-        </div>
-
-        <div class="card">
-            <div class="label">Form Trend</div>
-            <div class="value">{{ insights.form_trend }}</div>
-        </div>
-
-        <div class="card">
-            <div class="label">Trend Value</div>
-            <div class="value">{{ insights.trend_value }}</div>
-        </div>
-
-        <div class="card">
-            <div class="label">Adjusted Avg</div>
-            <div class="value">
-                {{ insights.difficulty_adjusted_avg }}
+           <div class="card">
+                <div class="label">Predicted Finish</div>
+                <div class="value">
+                    {{ prediction.predicted_score|round(1) }}
+                    (+
+                    {{ prediction.to_par|round(1) }}
+                    )
+                </div>
             </div>
+
+            <div class="card">
+                <div class="label">Form Trend</div>
+                <div class="value">{{ insights.form_trend }}</div>
+            </div>
+
+            <div class="card">
+                <div class="label">Trend Value</div>
+                <div class="value">{{ insights.trend_value }}</div>
+            </div>
+
+            <div class="card">
+                <div class="label">Adjusted Avg</div>
+                <div class="value">
+                    {{ insights.difficulty_adjusted_avg }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card section">
+            <h3>Performance Trend</h3>
+            <canvas id="trendChart"></canvas>
+        </div>
+
+        <div class="section">
+            <h3>Recent Tournaments</h3>
+
+            <table>
+                <tr>
+                    <th>Tournament</th>
+                    <th>Score</th>
+                    <th>Vs Field</th>
+                </tr>
+
+                {% for row in recent %}
+                <tr>
+                    <td>{{ row.tournament }}</td>
+                    <td>{{ row.score }}</td>
+                    <td>{{ row.vs_field }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
 
     </div>
 
-    <div class="section card">
-        <h3>Performance Trend</h3>
-        <canvas id="trendChart"></canvas>
-    </div>
+    <!-- ================= RIGHT SIDEBAR ================= -->
+    <div class="sidebar">
 
-    <div class="section">
-        <h3>Recent Tournaments</h3>
+        <div class="card">
+            <h3>This Week's Tournament</h3>
 
-        <table>
-            <tr>
-                <th>Tournament</th>
-                <th>Score</th>
-                <th>Vs Field</th>
-            </tr>
+            <div style="margin-top: 10px;">
+                <strong>{{ current_tournament.name if current_tournament else "Loading..." }} </strong>
+            </div>
 
-            {% for row in recent %}
-            <tr>
-                <td>{{ row.tournament }}</td>
-                <td>{{ row.score }}</td>
-                <td>{{ row.vs_field }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+            <p style="font-size: 13px; color: #555;">
+                {{ current_tournament.summary if current_tournament else "Loading..." }}
+            </p>
+
+            <hr>
+
+            <p><strong>Location:</strong> {{ current_tournament.location }}</p>
+            <p><strong>Course:</strong> {{ current_tournament.course }}</p>
+            <p><strong>Par:</strong> {{ current_tournament.par }}</p>
+            <p><strong>Yardage:</strong> {{ current_tournament.yardage }}</p>
+
+            <hr>
+
+            <p><strong>Last Winner:</strong> {{ current_tournament.last_winner }}</p>
+            <p><strong>Winning Score:</strong> {{ current_tournament.last_score }}</p>
+
+            {% if current_tournament.wiki_url %}
+                <a href="{{ current_tournament.wiki_url }}" target="_blank">
+                    View Wikipedia
+                </a>
+            {% endif %}
+        </div>
+
     </div>
 
 </div>

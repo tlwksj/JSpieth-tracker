@@ -1,6 +1,8 @@
 import pandas as pd
+from utils.scoring import to_actual_score
 
-def predict_next_score(df):
+
+def predict_next_score(df, par):
     if df.empty:
         return None
 
@@ -18,7 +20,10 @@ def predict_next_score(df):
         momentum * 0.1
     )
 
-    return round(prediction, 2)
+    return {
+        "to_par": round(prediction, 2),
+        "predicted_score": to_actual_score(prediction, par)
+    }
 
 
 def get_insights(df):

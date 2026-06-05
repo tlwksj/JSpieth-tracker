@@ -36,13 +36,24 @@ def dashboard():
     prediction = predict_next_score(df)
     insights = get_insights(df)
 
-    recent = df.tail(10).to_dict(orient="records")
+    # IMPORTANT: make sure data is in order
+    if "date" in df.columns:
+        df = df.sort_values("date")
+
+    recent = df.tail(10)
+
+    chart_labels = recent["tournament"].tolist()
+    chart_scores = recent["score"].tolist()
+    chart_adjusted = recent["vs_field"].tolist()
 
     return render_template(
         "dashboard.html",
         prediction=prediction,
         insights=insights,
-        recent=recent
+        recent=recent.to_dict(orient="records"),
+        chart_labels=chart_labels,
+        chart_scores=chart_scores,
+        chart_adjusted=chart_adjusted
     )
 
 if __name__ == "__main__":

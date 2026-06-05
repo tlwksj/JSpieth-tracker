@@ -89,12 +89,12 @@
         </div>
 
         <div class="card">
-            <div class="label">Volatility</div>
-            <div class="value">{{ insights.volatility }}</div>
+            <div class="label">Trend Value</div>
+            <div class="value">{{ insights.trend_value }}</div>
         </div>
 
         <div class="card">
-            <div class="label">Adjusted Performance</div>
+            <div class="label">Adjusted Avg</div>
             <div class="value">
                 {{ insights.difficulty_adjusted_avg }}
             </div>
@@ -130,19 +130,28 @@
 </div>
 
 <script>
-    const labels = {{ recent | map(attribute='tournament') | list | tojson }};
-    const data = {{ recent | map(attribute='score') | list | tojson }};
+    const chartLabelsData = {{ chart_labels | tojson }};
+    const chartScoresData = {{ chart_scores | tojson }};
+    const chartAdjustedData = {{ chart_adjusted | tojson }};
 
     new Chart(document.getElementById('trendChart'), {
         type: 'line',
         data: {
-            labels: labels,
-            datasets: [{
-                label: 'Score Trend',
-                data: data,
-                borderColor: '#4a90e2',
-                fill: false
-            }]
+            labels: chartLabelsData,
+            datasets: [
+                {
+                    label: 'Raw Score',
+                    data: chartScoresData,
+                    borderColor: '#4a90e2',
+                    fill: false
+                },
+                {
+                    label: 'Vs Field',
+                    data: chartAdjustedData,
+                    borderColor: '#e24a4a',
+                    fill: false
+                }
+            ]
         }
     });
 </script>

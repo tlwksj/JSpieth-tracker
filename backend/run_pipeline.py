@@ -1,20 +1,25 @@
-if __name__ == "__main__":
-    from services.espn_api import fetch_live_tournaments
-    from services.transformer import transform_espn_data
-    from data_store import init_file, append_data, load_data
-    from predictor import predict_next_score, get_insights
+from services.espn_api import fetch_live_tournaments
+from services.transformer import transform_espn_data
+from services import spieth_is_playing
+from data_store import init_file, append_data, load_data
+from predictor import predict_next_score, get_insights
+import sys
 
-    init_file()
+init_file()
 
-    data = fetch_live_tournaments()
+data = fetch_live_tournaments()
 
-    df_new = transform_espn_data(data)
-    append_data(df_new)
+if not spieth_is_playing(data):
+    print("Spieth not playing. Exiting pipeline.")
+    sys.exit(0)
 
-    df = load_data()
+df_new = transform_espn_data(data)
+append_data(df_new)
 
-    prediction = predict_next_score(df)
-    insights = get_insights(df)
+df = load_data()
 
-    print("Prediction:", prediction)
-    print("Insights:", insights)
+prediction = predict_next_score(df)
+insights = get_insights(df)
+
+print("Prediction:", prediction)
+print("Insights:", insights)

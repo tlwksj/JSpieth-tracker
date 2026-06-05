@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spieth Dashboard</title>
+</head>
+<body>
+    <h1>Jordan Spieth Tracker</h1>
+
+    <h2>Recent Scores</h2>
+    <ul>
+        {% for score in recent_scores %}
+            <li>{{ score }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Prediction</h2>
+    <p>Expected Next Round Score: <b>{{ prediction }}</b></p>
+</body>
+</html>

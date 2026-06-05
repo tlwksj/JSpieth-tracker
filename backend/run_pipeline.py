@@ -1,11 +1,11 @@
-from services.espn_api import fetch_live_tournaments
-from services.transformer import transform_espn_data
-from services import spieth_is_playing
+from .services.espn_api import fetch_live_tournaments
+from .services.transformer import transform_espn_data
+from .services import spieth_is_playing
 from .data_store import init_file, append_data, load_data
 from .predictor import predict_next_score, get_insights
 import sys
-from services.tournament_store import init_tournament_file
-from services.wiki import get_tournament_info
+from .services.tournament_store import init_tournament_file
+from .services.wiki import get_tournament_info
 
 init_file()
 init_tournament_file()

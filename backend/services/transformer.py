@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
-from services.wiki import get_tournament_info
-from services.tournament_store import append_tournament, load_tournaments
+from .services.wiki import get_tournament_info
+from .services.tournament_store import append_tournament, load_tournaments
 import hashlib
 
 def make_tournament_id(name):

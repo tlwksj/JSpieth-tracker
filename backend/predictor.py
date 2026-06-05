@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.scoring import to_actual_score
+from .utils.scoring import to_actual_score
 
 
 def predict_next_score(df, par):

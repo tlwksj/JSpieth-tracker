@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from services.espn_api import fetch_live_tournaments
-from services.transformer import transform_espn_data
+from .services.espn_api import fetch_live_tournaments
+from .services.transformer import transform_espn_data
 from data_store import init_file, append_data
 
 def update_pipeline():

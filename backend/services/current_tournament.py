@@ -1,6 +1,6 @@
 import requests
 import hashlib
-from services.wiki import get_tournament_info
+from .wiki import get_tournament_info
 
 
 def fetch_current_tournament():
